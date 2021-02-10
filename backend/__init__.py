@@ -1,7 +1,13 @@
 import os
+from flask import Flask, request
+import requests
+import json
 
-from flask import Flask
-
+def response(app, res, status):
+    return app.response_class(
+        response=res,
+        status=status,
+    )
 
 def create_app(test_config=None):
     # create and configure the app
@@ -24,9 +30,23 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    @app.route('/secret', methods="POST")
+    def secret():
+        user_url = request.form.get('url', None)
+        if not user_url:
+            return response(app, {}, 400)
+        
+        user_url = user_url.rstrip('https://').split('/')
+        domain = user_url[0][1:]
+        key = user_url[-1]
+        DUO = f'https://{domain}/push/v2/activation/{key}?customer_protocol=1'
+        try:
+            secret = json.loads(requests.post(DUO).text)['response']['hotp_secret']
+            status = 200
+        except KeyError:
+            secret = ''
+            status = 400
+
+        return response(app, secret, status)
 
     return app
