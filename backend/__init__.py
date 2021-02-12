@@ -8,7 +8,6 @@ import json
 def response(app, res, status):
     return app.response_class(response=res, status=status,)
 
-
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -32,18 +31,18 @@ def create_app(test_config=None):
 
     @app.route("/secret", methods=["POST"])
     def secret():
-        return response(app, "3c9b7138faaab1417406f348b31d1638", 200)
         user_url = request.form.get("secret", None)
         if not user_url:
             return response(app, {}, 400)
 
-        user_url = user_url.rstrip("https://").split("/")
+        user_url = user_url.lstrip("https://").split("/")
         domain = user_url[0][1:]
         key = user_url[-1]
-        DUO = f"https://{domain}/push/v2/activation/{key}?customer_protocol=1"
+        DUO = f"https://api{domain}/push/v2/activation/{key}?customer_protocol=1"
+        print('HADSFSDAFJDSAFHDSAFJKSAFHSDKAJFHSALKJF')
+        print(DUO)
         try:
-            # secret = json.loads(requests.post(DUO).text)['response']['hotp_secret']
-            secret = "yesss"
+            secret = json.loads(requests.post(DUO).text)['response']['hotp_secret']
             status = 200
         except KeyError:
             secret = ""

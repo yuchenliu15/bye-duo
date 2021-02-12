@@ -31,18 +31,17 @@ function App() {
     localStorage.setItem('count', count + 1);
   }
   const onClick = (event) => {
-    const count = localStorage.getItem('count') || 0;
     setLoading(true);
     const form = new FormData();
-    form.append('secret', 'https://m-e4c9863e.duosecurity.com/iphone/S9I0Dwm7ju9V0jvoxWqM');    
-    localStorage.setItem('count', parseInt(count)+1);
-    axios.post(API, 
-        form)
+    form.append('secret', link);
+    axios.post(API, form)
       .then(res => {
         if(res.status === 200) {
           const secret = hi_base_32.encode(res.data)
           localStorage.setItem('secret', secret);
-          //console.log(twoFA.generateHOTP(encode, 1))
+          localStorage.setItem('count', 0);
+          setSecret(secret);
+          setLoading(false);
         }
         else {
           console.error('failed');
