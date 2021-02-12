@@ -32,9 +32,8 @@ def create_app(test_config=None):
 
     @app.route("/secret", methods=["POST"])
     def secret():
+        return response(app, "3c9b7138faaab1417406f348b31d1638", 200)
         user_url = request.form.get("secret", None)
-        count = request.form.get("count", None)
-        print('COUNNNNNNNNNNNNNNN' + str(count))
         if not user_url:
             return response(app, {}, 400)
 

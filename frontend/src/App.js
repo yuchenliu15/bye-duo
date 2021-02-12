@@ -1,7 +1,9 @@
 import './App.css';
 import { useState } from 'react';
 import axios from 'axios';
+import hi_base_32 from 'hi-base32';
 
+// 3c9b7138faaab1417406f348b31d1638
 
 const API = 'http://127.0.0.1:5000/secret'
 
@@ -16,13 +18,15 @@ function App() {
     setLoading(true);
     const form = new FormData();
     form.append('secret', 'https://m-e4c9863e.duosecurity.com/iphone/S9I0Dwm7ju9V0jvoxWqM');    
-    form.append('count', count);
     localStorage.setItem('count', parseInt(count)+1);
     axios.post(API, 
         form)
       .then(res => {
         if(res.status === 200) {
-          console.log(res.data);
+          localStorage.setItem('secret', res.data);
+          const encode = hi_base_32.encode(res.data)
+          console.log(encode)
+          console.log(twoFA.generateHOTP(encode, 0))
         }
         else {
           console.error('failed');
