@@ -21,6 +21,10 @@ try:
 except OSError:
     pass
 
+@app.route("/")
+def home():
+	return 'heyhey'
+
 @app.route("/secret", methods=["POST"])
 def secret():
     user_url = request.form.get("secret", None)
