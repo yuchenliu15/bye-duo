@@ -39,12 +39,10 @@ def create_app(test_config=None):
         domain = user_url[0][1:]
         key = user_url[-1]
         DUO = f"https://api{domain}/push/v2/activation/{key}?customer_protocol=1"
-        print('HADSFSDAFJDSAFHDSAFJKSAFHSDKAJFHSALKJF')
-        print(DUO)
         try:
             secret = json.loads(requests.post(DUO).text)['response']['hotp_secret']
             status = 200
-        except KeyError:
+        except:
             secret = ""
             status = 400
 

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import twoFA from '2fa-utils';
 import hi_base_32 from 'hi-base32';
+import { Button } from 'antd';
 
 // 3c9b7138faaab1417406f348b31d1638
 
@@ -13,6 +14,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [secret, setSecret] = useState('');
   const [passcode, setPasscode] = useState('');
+  const [message, setMessage] = useState('');
   useEffect(() => {
     const secret = localStorage.getItem('secret');
     setSecret(secret);
@@ -48,22 +50,28 @@ function App() {
         }
       })
       .catch(err => {
-        console.error(err);
+        setLoading(false);
+        setMessage('failed');
       });
   }
   return (
     <div className="App">
-      { secret?
+      <div>{message}</div>
+      <div>
+      { !secret?
         <div>
         <div>{passcode}</div>
-        <input type="button" value="generate" onClick={onGenerate} />
+        <input type="button" value="generate a new passcode" onClick={onGenerate} />
         </div>
         :
         <div>
-          <input type="text" onChange={onChange} />
-          <input type="button" value="go!" onClick={onClick} />
+          <input type="text" disabled={loading} onChange={onChange} />
+          <Button loading={loading} value="go!" onClick={onClick} >
+            go!
+          </Button>
         </div>
       }
+      </div>
     </div>
   );
 }
