@@ -18,11 +18,10 @@ function App() {
   useEffect(() => {
     chrome.storage.sync.get(['secret'], function(result) {
       if(result.secret) {
-        setMessage(result.secret)
         setSecret(result.secret);
         chrome.storage.sync.get(['count'], function(result) {
           setPasscode(twoFA.generateHOTP(secret, result.count));
-          chrome.storage.local.set({count: result.count+1}, function() {});
+          chrome.storage.sync.set({count: result.count+1}, function() {});
         });
 
       }
@@ -34,7 +33,7 @@ function App() {
   const onGenerate = event => {
     chrome.storage.sync.get(['count'], function(result) {
       setPasscode(twoFA.generateHOTP(secret, result.count));
-      chrome.storage.local.set({count: result.count+1}, function() {});
+      chrome.storage.sync.set({count: result.count+1}, function() {});
     })
 
   }
@@ -45,13 +44,11 @@ function App() {
     axios.post(API, form)
       .then(res => {
         if(res.status === 200) {
-          setMessage(res.data);
           const secret = hi_base_32.encode(res.data)
           chrome.storage.sync.set({secret: secret}, function() {});
           chrome.storage.sync.set({count: 0}, function() {});
           setSecret(secret);
           setLoading(false);
-          
         }
         else {
           console.error('failed');
