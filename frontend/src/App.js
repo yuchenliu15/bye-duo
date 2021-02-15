@@ -16,25 +16,25 @@ function App() {
   const [passcode, setPasscode] = useState('');
   const [message, setMessage] = useState('');
   useEffect(() => {
-    chrome.storage.sync.get(['secret'], function(secret) {
-      setSecret(secret);
-      if(secret) {
-        chrome.storage.sync.get(['count'], function(count) {
-          setPasscode(twoFA.generateHOTP(secret, count));
-          chrome.storage.local.set({count: count+1}, function() {});
+    chrome.storage.sync.get(['secret'], function(result) {
+      if(result.secret) {
+        setMessage(result.secret)
+        setSecret(result.secret);
+        chrome.storage.sync.get(['count'], function(result) {
+          setPasscode(twoFA.generateHOTP(secret, result.count));
+          chrome.storage.local.set({count: result.count+1}, function() {});
         });
 
       }
     });
-
   }, []);
   const onChange = event => {
     setLink(event.target.value);
   }
   const onGenerate = event => {
-    chrome.storage.sync.get(['count'], function(count) {
-      setPasscode(twoFA.generateHOTP(secret, count));
-      chrome.storage.local.set({count: count+1}, function() {});
+    chrome.storage.sync.get(['count'], function(result) {
+      setPasscode(twoFA.generateHOTP(secret, result.count));
+      chrome.storage.local.set({count: result.count+1}, function() {});
     })
 
   }
@@ -46,11 +46,11 @@ function App() {
       .then(res => {
         if(res.status === 200) {
           setMessage(res.data);
-          const secret = hi_base_32.encode(res.data)
-          chrome.storage.sync.set({secret: secret}, function() {});
-          chrome.storage.sync.set({count: 0}, function() {});
-          setSecret(secret);
-          setLoading(false);
+          // const secret = hi_base_32.encode(res.data)
+          // chrome.storage.sync.set({secret: secret}, function() {});
+          // chrome.storage.sync.set({count: 0}, function() {});
+          // setSecret(secret);
+          // setLoading(false);
           
         }
         else {
@@ -59,14 +59,14 @@ function App() {
       })
       .catch(err => {
         setLoading(false);
-        setMessage('failed');
+        setMessage(err);
       });
   }
   return (
     <div className="App">
       <div>{message}</div>
       <div>
-      { !secret?
+      { secret?
         <div>
         <div>{passcode}</div>
         <input type="button" value="generate a new passcode" onClick={onGenerate} />

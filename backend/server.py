@@ -27,6 +27,7 @@ def home():
 
 @app.route("/secret", methods=["POST"])
 def secret():
+    return 'helllo'
     user_url = request.form.get("secret", None)
     if not user_url:
         return response(app, {}, 400)
