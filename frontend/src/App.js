@@ -46,11 +46,11 @@ function App() {
       .then(res => {
         if(res.status === 200) {
           setMessage(res.data);
-          // const secret = hi_base_32.encode(res.data)
-          // chrome.storage.sync.set({secret: secret}, function() {});
-          // chrome.storage.sync.set({count: 0}, function() {});
-          // setSecret(secret);
-          // setLoading(false);
+          const secret = hi_base_32.encode(res.data)
+          chrome.storage.sync.set({secret: secret}, function() {});
+          chrome.storage.sync.set({count: 0}, function() {});
+          setSecret(secret);
+          setLoading(false);
           
         }
         else {
