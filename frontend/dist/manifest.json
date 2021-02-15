@@ -10,7 +10,7 @@
     "default_title": "Open the popup"
   },
   "icons": {
-    "16": "logo192.png"
+    "16": "icon.png"
   },
     "permissions": [
       "storage"

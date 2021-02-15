@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import twoFA from '2fa-utils';
 import hi_base_32 from 'hi-base32';
-import { Button } from 'antd';
+import { Button, Input, Row, Col } from 'antd';
 
 // 3c9b7138faaab1417406f348b31d1638
 
@@ -65,15 +65,33 @@ function App() {
       <div>
       { secret?
         <div>
-        <div>{passcode}</div>
-        <input type="button" value="generate a new passcode" onClick={onGenerate} />
+          <Row justify="center" style={{margin: "10px", fontSize: "35px"}}>
+              <Col span={16} >
+                {passcode}
+              </Col>
+          </Row>
+          <Row justify="center" style={{margin: "10px"}}>
+              <Col>
+                <Button type="primary"  onClick={onGenerate} >
+                  generate passcode
+                </Button>
+              </Col>
+          </Row>
+
         </div>
         :
         <div>
-          <input type="text" disabled={loading} onChange={onChange} />
-          <Button loading={loading} value="go!" onClick={onClick} >
-            go!
-          </Button>
+          <Row justify="center" style={{margin: "10px"}}>
+              <Col span={20} >
+                <Input type="text" disabled={loading} onChange={onChange} />
+              </Col>
+          </Row>
+          <Row justify="center" style={{margin: "10px"}}>
+              <Col span={6} >
+              <Button type="primary" loading={loading} onClick={onClick} >go!</Button>
+              </Col>
+          </Row>
+
         </div>
       }
       </div>
