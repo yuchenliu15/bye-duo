@@ -7,7 +7,7 @@ import { Button } from 'antd';
 
 // 3c9b7138faaab1417406f348b31d1638
 
-const API = 'http://127.0.0.1:5000/secret'
+const API = 'https://goodbyepass.tk/secret'
 
 function App() {
   const [link, setLink] = useState('');
@@ -16,21 +16,27 @@ function App() {
   const [passcode, setPasscode] = useState('');
   const [message, setMessage] = useState('');
   useEffect(() => {
-    const secret = localStorage.getItem('secret');
-    setSecret(secret);
-    if(secret) {
-      const count = localStorage.getItem('count');
-      setPasscode(twoFA.generateHOTP(secret, count));
-      localStorage.setItem('count', count + 1);
-    }
+    chrome.storage.sync.get(['secret'], function(secret) {
+      setSecret(secret);
+      if(secret) {
+        chrome.storage.sync.get(['count'], function(count) {
+          setPasscode(twoFA.generateHOTP(secret, count));
+          chrome.storage.local.set({count: count+1}, function() {});
+        });
+
+      }
+    });
+
   }, []);
   const onChange = event => {
     setLink(event.target.value);
   }
   const onGenerate = event => {
-    const count = localStorage.getItem('count');
-    setPasscode(twoFA.generateHOTP(secret, count));
-    localStorage.setItem('count', count + 1);
+    chrome.storage.sync.get(['count'], function(count) {
+      setPasscode(twoFA.generateHOTP(secret, count));
+      chrome.storage.local.set({count: count+1}, function() {});
+    })
+
   }
   const onClick = (event) => {
     setLoading(true);
@@ -39,11 +45,13 @@ function App() {
     axios.post(API, form)
       .then(res => {
         if(res.status === 200) {
+          setMessage(res.data);
           const secret = hi_base_32.encode(res.data)
-          localStorage.setItem('secret', secret);
-          localStorage.setItem('count', 0);
+          chrome.storage.sync.set({secret: secret}, function() {});
+          chrome.storage.sync.set({count: 0}, function() {});
           setSecret(secret);
           setLoading(false);
+          
         }
         else {
           console.error('failed');

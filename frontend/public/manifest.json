@@ -13,5 +13,6 @@
     "16": "logo192.png"
   },
     "permissions": [
+      "storage"
   ]
 }
