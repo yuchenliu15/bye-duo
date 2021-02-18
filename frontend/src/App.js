@@ -10,6 +10,12 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 // 3c9b7138faaab1417406f348b31d1638
 
 const API = 'https://goodbyepass.tk/secret'
+const SETUP = [
+  `1️⃣After login, on the DUO page, click "add a new device" on the left.`,
+  `2️⃣Select an "iOS tablet" and click on "email me an activation link"`,
+  `3️⃣In your email, click on the activation link and paste the popup's
+    link into the extension's input bar, then click "go!"`
+]
 
 function App() {
   const [link, setLink] = useState('');
@@ -73,7 +79,7 @@ function App() {
     <div className="App">
       <div>{message}</div>
       <div>
-      { secret?
+      {! secret?
         <div>
           <Row justify="center" style={{margin: "10px"}}>
               <Col>
@@ -103,8 +109,17 @@ function App() {
         :
         <div>
           <Row justify="center" style={{margin: "10px"}}>
-              <Col span={20} >
-                <Input type="text" disabled={loading} onChange={onChange} />
+              <Col span={22} >
+                <div>Set up:</div>
+                {SETUP.map((item, index) => {
+                  return <div style={{marginTop: "10px"}}>{item}</div>}
+                )}
+              </Col>
+          </Row>
+          <Row justify="center" style={{margin: "10px"}}>
+              <Col span={22} >
+                <Input type="text" placeholder={"popup's url"}
+                  disabled={loading} onChange={onChange} />
               </Col>
           </Row>
           <Row justify="center" style={{margin: "10px"}}>
