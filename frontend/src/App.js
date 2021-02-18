@@ -4,6 +4,8 @@ import axios from 'axios';
 import twoFA from '2fa-utils';
 import hi_base_32 from 'hi-base32';
 import { Button, Input, Row, Col } from 'antd';
+import { CopyOutlined,RedoOutlined, CheckCircleOutlined } from '@ant-design/icons'
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 // 3c9b7138faaab1417406f348b31d1638
 
@@ -15,15 +17,15 @@ function App() {
   const [secret, setSecret] = useState('');
   const [passcode, setPasscode] = useState('');
   const [message, setMessage] = useState('');
+  const [copy, setCopy] = useState(false);
   useEffect(() => {
-    chrome.storage.sync.get(['secret'], function(result) {
-      if(result.secret) {
-        setSecret(result.secret);
+    chrome.storage.sync.get(['secret'], function(secret_result) {
+      if(secret_result.secret) {
         chrome.storage.sync.get(['count'], function(result) {
-          setPasscode(twoFA.generateHOTP(secret, result.count));
+          setPasscode(twoFA.generateHOTP(secret_result.secret, result.count));
           chrome.storage.sync.set({count: result.count+1}, function() {});
         });
-
+        setSecret(secret_result.secret);
       }
     });
   }, []);
@@ -34,8 +36,8 @@ function App() {
     chrome.storage.sync.get(['count'], function(result) {
       setPasscode(twoFA.generateHOTP(secret, result.count));
       chrome.storage.sync.set({count: result.count+1}, function() {});
-    })
-
+    });
+    setCopy(false);
   }
   const onClick = (event) => {
     setLoading(true);
@@ -58,6 +60,14 @@ function App() {
         setLoading(false);
         setMessage(err);
       });
+
+    // dev mode: 
+
+    // const secret = hi_base_32.encode('3c9b7138faaab1417406f348b31d1638')
+    // chrome.storage.sync.set({secret: secret}, function() {});
+    // chrome.storage.sync.set({count: 0}, function() {});
+    // setSecret(secret);
+    // setLoading(false);
   }
   return (
     <div className="App">
@@ -65,6 +75,13 @@ function App() {
       <div>
       { secret?
         <div>
+          <Row justify="center" style={{margin: "10px"}}>
+              <Col>
+                <Button type="secondary" onClick={onGenerate} >
+                  <RedoOutlined />
+                </Button>
+              </Col>
+          </Row>
           <Row justify="center" style={{margin: "10px", fontSize: "35px"}}>
               <Col span={16} >
                 {passcode}
@@ -72,9 +89,13 @@ function App() {
           </Row>
           <Row justify="center" style={{margin: "10px"}}>
               <Col>
-                <Button type="primary"  onClick={onGenerate} >
-                  generate passcode
+              <CopyToClipboard text={passcode}
+                onCopy={() => setCopy(true)}>
+                <Button type="primary" >
+                  {copy? <CheckCircleOutlined />
+                  :<div><CopyOutlined/>copy passcode</div>}
                 </Button>
+              </CopyToClipboard>
               </Col>
           </Row>
 

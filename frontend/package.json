@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "2fa-utils": "^1.1.5",
+    "@ant-design/icons": "^4.5.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -11,6 +12,7 @@
     "axios": "^0.21.1",
     "eslint-config-react-app": "^6.0.0",
     "react": "^17.0.1",
+    "react-copy-to-clipboard": "^5.0.3",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.2",
     "web-vitals": "^1.0.1"
