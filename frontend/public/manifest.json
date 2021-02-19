@@ -10,8 +10,8 @@
     "default_title": "Open the popup"
   },
   "icons": {
-    "128": "EasyDUO128.png"
-    "48": "EasyDUO48.png"
+    "128": "EasyDUO128.png",
+    "48": "EasyDUO48.png",
     "16": "EasyDUO16.png"
   },
     "permissions": [
