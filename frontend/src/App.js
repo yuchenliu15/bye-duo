@@ -11,6 +11,14 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 const API = 'https://goodbyepass.tk/secret'
 
+const generatePasscode = (secret, count) => {
+  let res = twoFA.generateHOTP(secret, count);
+  while(res.length !== 6) {
+    res = twoFA.generateHOTP(secret, count);
+  }
+  return res;
+}
+
 function App() {
   const [link, setLink] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,7 +30,7 @@ function App() {
     chrome.storage.sync.get(['secret'], function(secret_result) {
       if(secret_result.secret) {
         chrome.storage.sync.get(['count'], function(result) {
-          setPasscode(twoFA.generateHOTP(secret_result.secret, result.count));
+          setPasscode(generatePasscode(secret_result.secret, result.count));
           chrome.storage.sync.set({count: result.count+1}, function() {});
         });
         setSecret(secret_result.secret);
@@ -34,7 +42,7 @@ function App() {
   }
   const onGenerate = event => {
     chrome.storage.sync.get(['count'], function(result) {
-      setPasscode(twoFA.generateHOTP(secret, result.count));
+      setPasscode(generatePasscode(secret, result.count));
       chrome.storage.sync.set({count: result.count+1}, function() {});
     });
     setCopy(false);
