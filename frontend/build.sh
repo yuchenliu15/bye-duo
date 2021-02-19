@@ -1,5 +1,9 @@
 #!/bin/bash
 
+z() {
+	zip -r dist.zip dist
+}
+
 echo 'building react'
 
 rm -rf dist/*
