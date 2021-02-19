@@ -1,16 +1,18 @@
 {
   "manifest_version": 2,
 
-  "name": "Bye DUO",
-  "description": "Goodbye to the annoying DUO",
-  "version": "0.0.1.1",
+  "name": "Easy DUO",
+  "description": "Log in to NYU using just your browser!",
+  "version": "0.0.1.2",
 
   "browser_action": {
     "default_popup": "popup.html",
     "default_title": "Open the popup"
   },
   "icons": {
-    "16": "icon.png"
+    "128": "EasyDUO128.png"
+    "48": "EasyDUO48.png"
+    "16": "EasyDUO16.png"
   },
     "permissions": [
       "storage"
