@@ -23,7 +23,9 @@ const generatePasscode = (secret, count) => {
   let res = twoFA.generateHOTP(secret, count);
   while(res.length !== 6) {
     res = twoFA.generateHOTP(secret, count);
+    count += 1;
   }
+  chrome.storage.sync.set({count: count+1}, function() {});
   return res;
 }
 
@@ -31,7 +33,7 @@ function App() {
   const [link, setLink] = useState('');
   const [loading, setLoading] = useState(false);
   const [secret, setSecret] = useState('');
-  const [passcode, setPasscode] = useState('222222');
+  const [passcode, setPasscode] = useState('');
   const [message, setMessage] = useState('');
   const [copy, setCopy] = useState(false);
   useEffect(() => {
@@ -39,7 +41,6 @@ function App() {
       if(secret_result.secret) {
         chrome.storage.sync.get(['count'], function(result) {
           setPasscode(generatePasscode(secret_result.secret, result.count));
-          chrome.storage.sync.set({count: result.count+1}, function() {});
         });
         setSecret(secret_result.secret);
       }
@@ -51,7 +52,6 @@ function App() {
   const onGenerate = event => {
     chrome.storage.sync.get(['count'], function(result) {
       setPasscode(generatePasscode(secret, result.count));
-      chrome.storage.sync.set({count: result.count+1}, function() {});
     });
     setCopy(false);
   }
@@ -62,10 +62,11 @@ function App() {
     axios.post(API, form)
       .then(res => {
         if(res.status === 200) {
-          const secret = hi_base_32.encode(res.data)
-          chrome.storage.sync.set({secret: secret}, function() {});
+          const newSecret = hi_base_32.encode(res.data)
+          chrome.storage.sync.set({secret: newSecret}, function() {});
           chrome.storage.sync.set({count: 0}, function() {});
-          setSecret(secret);
+          setPasscode(generatePasscode(newSecret, 0));
+          setSecret(newSecret);
           setLoading(false);
         }
         else {
@@ -89,7 +90,7 @@ function App() {
     <div className="App">
       <div>{message}</div>
       <div>
-      { !secret?
+      { secret?
         <div>
           <Row align="middle" justify="center" style={{margin: "10px", fontSize: "50px"}}>
               <Col span={24}  style={{textAlign: 'center'}}>

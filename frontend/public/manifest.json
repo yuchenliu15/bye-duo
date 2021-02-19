@@ -3,7 +3,7 @@
 
   "name": "Easy DUO",
   "description": "Log in to NYU using just your browser!",
-  "version": "0.0.1.2",
+  "version": "0.0.1.3",
 
   "browser_action": {
     "default_popup": "popup.html",
