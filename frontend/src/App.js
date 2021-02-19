@@ -11,6 +11,14 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 const API = 'https://goodbyepass.tk/secret'
 
+const STEPS = [
+  `1️⃣ Log in to NYU (if you’ve already logged in during the last 24 hours, you can go to start.nyu.edu).`,
+  `2️⃣ At the Multi-Factor Authentication page, click "Add a new device" on the left side of the screen. When prompted, log in through Duo as usual.`,
+  `3️⃣ Select “Tablet,” and then select “iOS” on the next page.`,
+  `4️⃣ Click “I have Duo Mobile installed,” and then ”Email me an activation link instead.”`,
+  `5️⃣ In your email, click on the activation link and paste the popup's URL (not the activation code) into Easy DUO's input bar. Click “Activate Easy DUO!”`,
+]
+
 const generatePasscode = (secret, count) => {
   let res = twoFA.generateHOTP(secret, count);
   while(res.length !== 6) {
@@ -23,7 +31,7 @@ function App() {
   const [link, setLink] = useState('');
   const [loading, setLoading] = useState(false);
   const [secret, setSecret] = useState('');
-  const [passcode, setPasscode] = useState('');
+  const [passcode, setPasscode] = useState('222222');
   const [message, setMessage] = useState('');
   const [copy, setCopy] = useState(false);
   useEffect(() => {
@@ -81,19 +89,24 @@ function App() {
     <div className="App">
       <div>{message}</div>
       <div>
-      { secret?
+      { !secret?
         <div>
-          <Row justify="center" style={{margin: "10px"}}>
-              <Col>
-                <Button type="secondary" onClick={onGenerate} >
+          <Row align="middle" justify="center" style={{margin: "10px", fontSize: "50px"}}>
+              <Col span={24}  style={{textAlign: 'center'}}>
+                <div class="container">
+                  <div>
+                  {passcode}
+
+                  </div>
+                  <div class="button-container">
+                  <Button style={{marginBottom: '40px'}} type="secondary" onClick={onGenerate} >
                   <RedoOutlined />
                 </Button>
+                  </div>
+                </div>
+
               </Col>
-          </Row>
-          <Row justify="center" style={{margin: "10px", fontSize: "35px"}}>
-              <Col span={16} >
-                {passcode}
-              </Col>
+
           </Row>
           <Row justify="center" style={{margin: "10px"}}>
               <Col>
@@ -111,13 +124,22 @@ function App() {
         :
         <div>
           <Row justify="center" style={{margin: "10px"}}>
-              <Col span={20} >
+              <Col span={22} >
+                {
+                  STEPS.map(item => {
+                    return <div style={{marginBottom: "5px"}}>{item}</div>
+                  })
+                }
+              </Col>
+          </Row>
+          <Row justify="center" style={{margin: "10px"}}>
+              <Col span={22} >
                 <Input type="text" disabled={loading} onChange={onChange} 
                   placeholder={"Paste Activation URL"}/>
               </Col>
           </Row>
-          <Row justify="center" style={{margin: "10px"}}>
-              <Col span={6} >
+          <Row justify="center" style={{margin: "10px", textAlign:'center'}}>
+              <Col  span={24} >
               <Button type="primary" loading={loading} onClick={onClick} >
                 Activate Easy DUO!
               </Button>
