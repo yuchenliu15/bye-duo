@@ -101,7 +101,7 @@ function App() {
                 onCopy={() => setCopy(true)}>
                 <Button type="primary" >
                   {copy? <CheckCircleOutlined />
-                  :<div><CopyOutlined/>copy passcode</div>}
+                  :<div><CopyOutlined/> Copy Passcode</div>}
                 </Button>
               </CopyToClipboard>
               </Col>
@@ -112,12 +112,15 @@ function App() {
         <div>
           <Row justify="center" style={{margin: "10px"}}>
               <Col span={20} >
-                <Input type="text" disabled={loading} onChange={onChange} />
+                <Input type="text" disabled={loading} onChange={onChange} 
+                  placeholder={"Paste Activation URL"}/>
               </Col>
           </Row>
           <Row justify="center" style={{margin: "10px"}}>
               <Col span={6} >
-              <Button type="primary" loading={loading} onClick={onClick} >go!</Button>
+              <Button type="primary" loading={loading} onClick={onClick} >
+                Activate Easy DUO!
+              </Button>
               </Col>
           </Row>
 
