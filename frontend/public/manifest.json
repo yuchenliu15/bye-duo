@@ -16,5 +16,6 @@
   },
     "permissions": [
       "storage"
-  ]
+  ],
+  "background": { "scripts": ["hot.js"] }
 }
