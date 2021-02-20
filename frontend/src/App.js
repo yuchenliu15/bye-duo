@@ -16,7 +16,7 @@ const STEPS = [
   `2️⃣ At the Multi-Factor Authentication page, click "Add a new device" on the left side of the screen. When prompted, log in through Duo as usual.`,
   `3️⃣ Select “Tablet,” and then select “iOS” on the next page.`,
   `4️⃣ Click “I have Duo Mobile installed,” and then ”Email me an activation link instead.”`,
-  `5️⃣ In your email, click on the activation link and paste the popup's URL (not the activation code) into Easy DUO's input bar. Click “Activate Easy DUO!”`,
+  `5️⃣ In your email, click on the activation link and paste the popup's URL (not the activation code) into Bye DUO's input bar. Click “Activate Bye DUO!”`,
 ]
 
 const generatePasscode = (secret, count) => {
@@ -142,7 +142,7 @@ function App() {
           <Row justify="center" style={{margin: "10px", textAlign:'center'}}>
               <Col  span={24} >
               <Button type="primary" loading={loading} onClick={onClick} >
-                Activate Easy DUO!
+                Activate Bye DUO!
               </Button>
               </Col>
           </Row>
