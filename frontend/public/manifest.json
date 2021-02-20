@@ -3,7 +3,7 @@
 
   "name": "Bye DUO",
   "description": "Log in to NYU using just your browser! Goodbye to DUO!",
-  "version": "0.0.1.4",
+  "version": "0.0.1.5",
 
   "browser_action": {
     "default_popup": "popup.html",

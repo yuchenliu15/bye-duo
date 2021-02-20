@@ -39,11 +39,16 @@ function App() {
   useEffect(() => {
     chrome.storage.sync.get(['secret'], function(secret_result) {
       if(secret_result.secret) {
+        document.getElementsByTagName(`html`)[0].style.height = '180px';
         chrome.storage.sync.get(['count'], function(result) {
           setPasscode(generatePasscode(secret_result.secret, result.count));
         });
         setSecret(secret_result.secret);
       }
+      else {
+        document.getElementsByTagName(`html`)[0].style.height = '560px';
+      }
+
     });
   }, []);
   const onChange = event => {
@@ -65,6 +70,7 @@ function App() {
           const newSecret = hi_base_32.encode(res.data)
           chrome.storage.sync.set({secret: newSecret}, function() {});
           chrome.storage.sync.set({count: 0}, function() {});
+          document.getElementsByTagName(`html`)[0].style.height = '180px';
           setPasscode(generatePasscode(newSecret, 0));
           setSecret(newSecret);
           setLoading(false);
@@ -83,8 +89,10 @@ function App() {
     // const secret = hi_base_32.encode('3c9b7138faaab1417406f348b31d1638')
     // chrome.storage.sync.set({secret: secret}, function() {});
     // chrome.storage.sync.set({count: 0}, function() {});
+    // document.getElementsByTagName(`html`)[0].style.height = '180px';
     // setSecret(secret);
     // setLoading(false);
+    // setPasscode(generatePasscode(secret, 0));
   }
   return (
     <div className="App">
