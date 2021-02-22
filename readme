@@ -1,0 +1,28 @@
+Tired of having to wait for a notification every time you want to join a Zoom class? Frustrated because you can't log in to NYU when your phone’s out of battery? So are we. That’s why we made Bye DUO.
+
+With Bye DUO, you can log in to NYU using just your browser. Whenever you want to log in, Bye DUO will generate a six-digit passcode that you can quickly paste into the Multi-Factor Authentication. No need to wait for a notification on your phone!
+
+Bye DUO is easier and faster than Duo Mobile, without sacrificing any security.
+
+----------------
+
+One-Time Setup:
+1. Log in to NYU. At the Multi-Factor Authentication page, click "Add a new device" on the left side of the screen.
+2. Select “Tablet,” and then select “iOS” on the next page.
+3. Click “I have Duo Mobile installed,” then ”Email me an activation link instead.”
+4. In your email, click on the activation link and paste the popup's URL (not the activation code) into Bye DUO's input bar. Click “Activate Bye DUO!”
+
+Voilà! Now you can generate passcodes whenever you need!
+
+----------------
+
+Who are we? We’re just a group of NYU students who wanted to make Multi-Factor Authentication easier. We don’t make any money from this.
+
+Like you, we value privacy. Bye DUO does not collect any user data. We cannot and will not steal, sell, or use your personal information. All Bye DUO does is generate passcodes for you. You can always opt out of Bye DUO at any time.
+
+Like Bye DUO? Support us by leaving a rating and telling your friends!
+
+Questions? Feedback? Email us by clicking “Contact the developer” or DM us on Instagram!
+
+Programming: Yuchen Liu
+Product Management & UI/UX: Wesley Davies
