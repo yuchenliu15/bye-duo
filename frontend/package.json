@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.0.1.5",
+  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "2fa-utils": "^1.1.5",

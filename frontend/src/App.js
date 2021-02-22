@@ -12,11 +12,14 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 const API = 'https://goodbyepass.tk/secret'
 
 const STEPS = [
-  `Log in to NYU (if you’ve already logged in during the last 24 hours, you can go to start.nyu.edu).`,
-  `At the Multi-Factor Authentication page, click "Add a new device" on the left side of the screen. When prompted, log in through Duo as usual.`,
-  `Select “Tablet,” and then select “iOS” on the next page.`,
-  `Click “I have Duo Mobile installed,” and then ”Email me an activation link instead.”`,
-  `In your email, click on the activation link and paste the popup's URL (not the activation code) into Bye DUO's input bar. Click “Activate Bye DUO!”`,
+  <span>Log in to NYU. At the Multi-Factor Authentication page, 
+  click <b>"Add a new device"</b> on the left side of the screen.</span>, 
+  <span>Select <b>“Tablet,”</b> and then select <b>“iOS”</b> on the next page.</span>,
+  <span>Click <b>“I have Duo Mobile installed,”</b> 
+    then <b>”Email me an activation link instead.”</b></span>,
+  <span>In your email, click on the activation link and paste the popup's URL 
+    (not the activation code) into Bye DUO's input bar. 
+    Click <b>“Activate Bye DUO!”</b></span>,
 ]
 
 const generatePasscode = (secret, count) => {
@@ -46,7 +49,7 @@ function App() {
         setSecret(secret_result.secret);
       }
       else {
-        document.getElementsByTagName(`html`)[0].style.height = '560px';
+        document.getElementsByTagName(`html`)[0].style.height = '480px';
       }
 
     });
@@ -141,15 +144,17 @@ function App() {
               dataSource={STEPS}
               renderItem={(item, index) => (
                 <List.Item>
-                  <span className="number" >{(index + 1) + '. '}</span>  
-                  {item}
+                  <span>
+                    <span className="number">{(index + 1) + '. '}</span>
+                    {item}
+                  </span>  
                 </List.Item>
               )}
             />
               </Col>
           </Row>
           <Row justify="center" style={{margin: "10px"}}>
-              <Col span={22} >
+              <Col span={24} >
                 <Input className={'input'} 
                    type="text" disabled={loading} onChange={onChange} 
                   placeholder={"Paste Activation URL"}/>
@@ -160,7 +165,7 @@ function App() {
               <Col  span={24} >
               <Button className={'button'} type={'primary'} 
                 loading={loading} onClick={onClick} >
-                Activate Bye DUO!
+                Activate Bye DUO 🔓
               </Button>
               </Col>
           </Row>
