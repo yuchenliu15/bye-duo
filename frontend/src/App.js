@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import twoFA from '2fa-utils';
 import hi_base_32 from 'hi-base32';
-import { Button, Input, Row, Col,  List } from 'antd';
+import { Button, Input, Row, Col,  List, Form } from 'antd';
 import { CopyOutlined,RedoOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 
@@ -19,7 +19,7 @@ const STEPS = [
     then <b>”Email me an activation link instead.”</b></span>,
   <span>In your email, click on the activation link and paste the popup's URL 
     (not the activation code) into Bye DUO's input bar. 
-    Click <b>“Activate Bye DUO!”</b></span>,
+    Click <b>“Activate Bye DUO”</b></span>,
 ]
 
 const generatePasscode = (secret, count) => {
@@ -63,8 +63,18 @@ function App() {
     });
     setCopy(false);
   }
+  const error = (text) => {
+    setMessage(text);
+    setLoading(false);
+  }
   const onClick = (event) => {
     setLoading(true);
+    if(!link.length || link.search(/https:\/\//i) === -1
+      || link.search(/m-/i) === -1
+      || link.search(/urldefense/i) !== -1) {
+      error("Use popup's URL by clicking on link in email");
+      return;
+    }
     const form = new FormData();
     form.append('secret', link);
     axios.post(API, form)
@@ -79,12 +89,11 @@ function App() {
           setLoading(false);
         }
         else {
-          console.error('failed');
+          error("Use popup's URL by clicking on link in email");
         }
       })
       .catch(err => {
-        setLoading(false);
-        setMessage(err);
+        error("Use popup's URL by clicking on link in email");
       });
 
     // dev mode: 
@@ -99,7 +108,6 @@ function App() {
   }
   return (
     <div className="App">
-      <div>{message}</div>
       <div>
       { secret?
         <div>
@@ -153,22 +161,29 @@ function App() {
             />
               </Col>
           </Row>
-          <Row justify="center" style={{margin: "10px"}}>
-              <Col span={24} >
-                <Input className={'input'} 
-                   type="text" disabled={loading} onChange={onChange} 
-                  placeholder={"Paste Activation URL"}/>
-              </Col>
+          <Row justify="center" >
+          <Col span={23} >
+
+            <Form style={{textAlign: 'center'}}>
+              <Form.Item
+                    validateStatus={!message.length? 'success': 'error'}
+                    help={!message.length? false: message}
+              >
+                <Input className='input'
+                    type="text" disabled={loading} onChange={onChange} 
+                    placeholder={"Paste Activation URL"}/>
+              </Form.Item>
+                  
+              <Form.Item >
+                <Button className='button' type='primary' 
+                  loading={loading} onClick={onClick} >
+                  Activate Bye DUO 🔓
+                </Button>
+              </Form.Item>
+            </Form>
+            </Col>
           </Row>
-          <Row  justify="center" 
-            style={{margin: "10px", textAlign:'center'}}>
-              <Col  span={24} >
-              <Button className={'button'} type={'primary'} 
-                loading={loading} onClick={onClick} >
-                Activate Bye DUO 🔓
-              </Button>
-              </Col>
-          </Row>
+
 
         </div>
       }
