@@ -7,9 +7,8 @@ import { Button, Input, Row, Col,  List, Form } from 'antd';
 import { CopyOutlined,RedoOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 
-// 3c9b7138faaab1417406f348b31d1638
 
-const API = 'https://goodbyepass.tk/secret'
+const API = process.env.REACT_APP_API;
 
 const STEPS = [
   <span>Log in to NYU. At the Multi-Factor Authentication page, 
@@ -39,6 +38,7 @@ function App() {
   const [passcode, setPasscode] = useState('');
   const [message, setMessage] = useState('');
   const [copy, setCopy] = useState(false);
+
   useEffect(() => {
     chrome.storage.sync.get(['secret'], function(secret_result) {
       if(secret_result.secret) {
@@ -54,20 +54,26 @@ function App() {
 
     });
   }, []);
+
   const onChange = event => {
     setLink(event.target.value);
   }
+
   const onGenerate = event => {
     chrome.storage.sync.get(['count'], function(result) {
       setPasscode(generatePasscode(secret, result.count));
     });
     setCopy(false);
   }
+
   const error = (text) => {
     setMessage(text);
     setLoading(false);
   }
+  
   const onClick = (event) => {
+    console.log('api:')
+    console.log(API)
     setLoading(true);
     if(!link.length || link.search(/https:\/\//i) === -1
       || link.search(/m-/i) === -1
@@ -106,6 +112,7 @@ function App() {
     // setLoading(false);
     // setPasscode(generatePasscode(secret, 0));
   }
+
   return (
     <div className="App">
       <div>
@@ -125,9 +132,7 @@ function App() {
                 </Button>
                   </div>
                 </div>
-
               </Col>
-
           </Row>
           <Row justify="center" style={{margin: "10px"}}>
               <Col>
@@ -183,8 +188,6 @@ function App() {
             </Form>
             </Col>
           </Row>
-
-
         </div>
       }
       </div>
